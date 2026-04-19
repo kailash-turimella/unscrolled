@@ -1,5 +1,9 @@
 import UIKit
 
+extension Notification.Name {
+    static let openFactCheck = Notification.Name("openFactCheck")
+}
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

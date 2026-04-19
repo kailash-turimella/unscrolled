@@ -22,8 +22,16 @@
 		D700000C000000000000CAFE /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6000002000000000000CAFE /* AVKit.framework */; };
 		D700000D000000000000CAFE /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6000003000000000000CAFE /* UserNotifications.framework */; };
 		D700000E000000000000CAFE /* UnscrolledBroadcast.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D3000001000000000000CAFE /* UnscrolledBroadcast.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D700000F000000000000CAFE /* SessionActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400000C000000000000CAFE /* SessionActivityAttributes.swift */; };
+		D7000010000000000000CAFE /* LiveActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400000D000000000000CAFE /* LiveActivityManager.swift */; };
+		D7000011000000000000CAFE /* FactCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400000E000000000000CAFE /* FactCheckView.swift */; };
 		D8000000000000000000CAFE /* SampleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5000000000000000000CAFE /* SampleHandler.swift */; };
 		D8000001000000000000CAFE /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6000004000000000000CAFE /* ReplayKit.framework */; };
+		DC000000000000000000CAFE /* UnscrolledWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB000002000000000000CAFE /* UnscrolledWidgets.swift */; };
+		DC000001000000000000CAFE /* UnscrolledLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB000003000000000000CAFE /* UnscrolledLiveActivity.swift */; };
+		DC000002000000000000CAFE /* SessionActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400000C000000000000CAFE /* SessionActivityAttributes.swift */; };
+		DC000003000000000000CAFE /* UnscrolledWidgets.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = DA000001000000000000CAFE /* UnscrolledWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DC000004000000000000CAFE /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6000005000000000000CAFE /* WidgetKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +41,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = D3000000000000000000CAFE;
 			remoteInfo = UnscrolledBroadcast;
+		};
+		D9000002000000000000CAFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D1000000000000000000CAFE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA000000000000000000CAFE;
+			remoteInfo = UnscrolledWidgets;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -48,11 +63,23 @@
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DA00000A000000000000CAFE /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DC000003000000000000CAFE /* UnscrolledWidgets.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D2000001000000000000CAFE /* Unscrolled.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unscrolled.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3000001000000000000CAFE /* UnscrolledBroadcast.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = UnscrolledBroadcast.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA000001000000000000CAFE /* UnscrolledWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = UnscrolledWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4000000000000000000CAFE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D4000001000000000000CAFE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		D4000002000000000000CAFE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -65,6 +92,9 @@
 		D4000009000000000000CAFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D400000A000000000000CAFE /* Unscrolled.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Unscrolled.entitlements; sourceTree = "<group>"; };
 		D400000B000000000000CAFE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D400000C000000000000CAFE /* SessionActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionActivityAttributes.swift; sourceTree = "<group>"; };
+		D400000D000000000000CAFE /* LiveActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityManager.swift; sourceTree = "<group>"; };
+		D400000E000000000000CAFE /* FactCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactCheckView.swift; sourceTree = "<group>"; };
 		D5000000000000000000CAFE /* SampleHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleHandler.swift; sourceTree = "<group>"; };
 		D5000001000000000000CAFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5000002000000000000CAFE /* UnscrolledBroadcast.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UnscrolledBroadcast.entitlements; sourceTree = "<group>"; };
@@ -73,6 +103,11 @@
 		D6000002000000000000CAFE /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		D6000003000000000000CAFE /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		D6000004000000000000CAFE /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
+		D6000005000000000000CAFE /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		DB000000000000000000CAFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DB000001000000000000CAFE /* UnscrolledWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UnscrolledWidgets.entitlements; sourceTree = "<group>"; };
+		DB000002000000000000CAFE /* UnscrolledWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnscrolledWidgets.swift; sourceTree = "<group>"; };
+		DB000003000000000000CAFE /* UnscrolledLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnscrolledLiveActivity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +130,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DA000007000000000000CAFE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC000004000000000000CAFE /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -106,6 +149,7 @@
 				D6000002000000000000CAFE /* AVKit.framework */,
 				D6000003000000000000CAFE /* UserNotifications.framework */,
 				D6000004000000000000CAFE /* ReplayKit.framework */,
+				D6000005000000000000CAFE /* WidgetKit.framework */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -115,6 +159,7 @@
 			children = (
 				D2000009000000000000CAFE /* Unscrolled */,
 				D3000008000000000000CAFE /* UnscrolledBroadcast */,
+				DA000008000000000000CAFE /* UnscrolledWidgets */,
 				D1000002000000000000CAFE /* Products */,
 				4A330B502F92F672006D203B /* Recovered References */,
 			);
@@ -125,6 +170,7 @@
 			children = (
 				D2000001000000000000CAFE /* Unscrolled.app */,
 				D3000001000000000000CAFE /* UnscrolledBroadcast.appex */,
+				DA000001000000000000CAFE /* UnscrolledWidgets.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -141,6 +187,9 @@
 				D4000006000000000000CAFE /* BubbleView.swift */,
 				D4000007000000000000CAFE /* NotificationManager.swift */,
 				D4000008000000000000CAFE /* SilentAudioPlayer.swift */,
+				D400000C000000000000CAFE /* SessionActivityAttributes.swift */,
+				D400000D000000000000CAFE /* LiveActivityManager.swift */,
+				D400000E000000000000CAFE /* FactCheckView.swift */,
 				D4000009000000000000CAFE /* Info.plist */,
 				D400000A000000000000CAFE /* Unscrolled.entitlements */,
 				D400000B000000000000CAFE /* Assets.xcassets */,
@@ -158,6 +207,17 @@
 			path = UnscrolledBroadcast;
 			sourceTree = "<group>";
 		};
+		DA000008000000000000CAFE /* UnscrolledWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				DB000002000000000000CAFE /* UnscrolledWidgets.swift */,
+				DB000003000000000000CAFE /* UnscrolledLiveActivity.swift */,
+				DB000000000000000000CAFE /* Info.plist */,
+				DB000001000000000000CAFE /* UnscrolledWidgets.entitlements */,
+			);
+			path = UnscrolledWidgets;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -169,11 +229,13 @@
 				D2000007000000000000CAFE /* Frameworks */,
 				D2000006000000000000CAFE /* Resources */,
 				D2000008000000000000CAFE /* Embed Foundation Extensions */,
+				DA00000A000000000000CAFE /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				D9000001000000000000CAFE /* PBXTargetDependency */,
+				D9000003000000000000CAFE /* PBXTargetDependency */,
 			);
 			name = Unscrolled;
 			productName = Unscrolled;
@@ -197,6 +259,23 @@
 			productReference = D3000001000000000000CAFE /* UnscrolledBroadcast.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		DA000000000000000000CAFE /* UnscrolledWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA000002000000000000CAFE /* Build configuration list for PBXNativeTarget "UnscrolledWidgets" */;
+			buildPhases = (
+				DA000005000000000000CAFE /* Sources */,
+				DA000007000000000000CAFE /* Frameworks */,
+				DA000006000000000000CAFE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UnscrolledWidgets;
+			productName = UnscrolledWidgets;
+			productReference = DA000001000000000000CAFE /* UnscrolledWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -211,6 +290,9 @@
 						CreatedOnToolsVersion = 15.0;
 					};
 					D3000000000000000000CAFE = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					DA000000000000000000CAFE = {
 						CreatedOnToolsVersion = 15.0;
 					};
 				};
@@ -229,6 +311,7 @@
 			targets = (
 				D2000000000000000000CAFE /* Unscrolled */,
 				D3000000000000000000CAFE /* UnscrolledBroadcast */,
+				DA000000000000000000CAFE /* UnscrolledWidgets */,
 			);
 		};
 /* End PBXProject section */
@@ -243,6 +326,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D3000006000000000000CAFE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA000006000000000000CAFE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -265,6 +355,9 @@
 				D7000006000000000000CAFE /* BubbleView.swift in Sources */,
 				D7000007000000000000CAFE /* NotificationManager.swift in Sources */,
 				D7000008000000000000CAFE /* SilentAudioPlayer.swift in Sources */,
+				D700000F000000000000CAFE /* SessionActivityAttributes.swift in Sources */,
+				D7000010000000000000CAFE /* LiveActivityManager.swift in Sources */,
+				D7000011000000000000CAFE /* FactCheckView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,6 +369,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DA000005000000000000CAFE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC000000000000000000CAFE /* UnscrolledWidgets.swift in Sources */,
+				DC000001000000000000CAFE /* UnscrolledLiveActivity.swift in Sources */,
+				DC000002000000000000CAFE /* SessionActivityAttributes.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -283,6 +386,11 @@
 			isa = PBXTargetDependency;
 			target = D3000000000000000000CAFE /* UnscrolledBroadcast */;
 			targetProxy = D9000000000000000000CAFE /* PBXContainerItemProxy */;
+		};
+		D9000003000000000000CAFE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA000000000000000000CAFE /* UnscrolledWidgets */;
+			targetProxy = D9000002000000000000CAFE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -499,6 +607,56 @@
 			};
 			name = Release;
 		};
+		DA000003000000000000CAFE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = UnscrolledWidgets/UnscrolledWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LPGVB86JH9;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = UnscrolledWidgets/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kailash.unscrolled.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		DA000004000000000000CAFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = UnscrolledWidgets/UnscrolledWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LPGVB86JH9;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = UnscrolledWidgets/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kailash.unscrolled.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -525,6 +683,15 @@
 			buildConfigurations = (
 				D3000003000000000000CAFE /* Debug */,
 				D3000004000000000000CAFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA000002000000000000CAFE /* Build configuration list for PBXNativeTarget "UnscrolledWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA000003000000000000CAFE /* Debug */,
+				DA000004000000000000CAFE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

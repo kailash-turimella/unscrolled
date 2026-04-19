@@ -23,13 +23,13 @@ func triggerBroadcastPicker() {
 
 struct ContentView: View {
     @EnvironmentObject var session: SessionManager
+    @State private var showFactCheck = false
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 16) {
                     sessionCard
-                    recordingStatusCard
                     totalTimeCard
                     placeholderGrid
                     recentSessionsCard
@@ -38,6 +38,12 @@ struct ContentView: View {
             }
             .navigationTitle("Unscrolled")
             .navigationBarTitleDisplayMode(.large)
+        }
+        .sheet(isPresented: $showFactCheck) {
+            FactCheckView().environmentObject(session)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .openFactCheck)) { _ in
+            showFactCheck = true
         }
     }
 
@@ -92,49 +98,6 @@ struct ContentView: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 24)
         .padding(.horizontal)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
-    }
-
-    // MARK: – Recording status card
-
-    private var recordingStatusCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 8) {
-                Circle()
-                    .fill(session.isBroadcastAlive ? Color.green : Color.gray)
-                    .frame(width: 10, height: 10)
-                    .animation(.easeInOut(duration: 0.3), value: session.isBroadcastAlive)
-                Text(session.isBroadcastAlive ? "Screen recording active" : "Screen recording inactive")
-                    .font(.subheadline.weight(.medium))
-                Spacer()
-            }
-
-            if let frame = session.latestFrame {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Latest captured frame")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                    Image(uiImage: frame)
-                        .resizable()
-                        .scaledToFit()
-                        .cornerRadius(8)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .strokeBorder(Color.white.opacity(0.1), lineWidth: 0.5)
-                        )
-                }
-            } else if session.isBroadcastAlive {
-                Text("Waiting for first frame…")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            } else {
-                Text("Start screen recording above to see captured frames here.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
     }
 

@@ -74,6 +74,7 @@ final class SessionManager: ObservableObject {
         startLiveTimer()
         NotificationManager.shared.scheduleSessionNotifications(from: now)
         BubbleWindowManager.shared.show()
+        LiveActivityManager.shared.start(sessionStart: now)
     }
 
     func endSession() {
@@ -99,6 +100,7 @@ final class SessionManager: ObservableObject {
 
         NotificationManager.shared.cancelAll()
         BubbleWindowManager.shared.hide()
+        LiveActivityManager.shared.stop()
     }
 
     private func startLiveTimer() {
@@ -132,7 +134,7 @@ final class SessionManager: ObservableObject {
         if isBroadcastAlive { loadLatestFrame() }
     }
 
-    private func loadLatestFrame() {
+    func loadLatestFrame() {
         guard let url = appGroupURL?.appendingPathComponent("latest_frame.jpg"),
               let data = try? Data(contentsOf: url),
               let image = UIImage(data: data) else { return }
