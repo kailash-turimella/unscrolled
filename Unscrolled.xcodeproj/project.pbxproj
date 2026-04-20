@@ -19,7 +19,6 @@
 		D7000009000000000000CAFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D400000B000000000000CAFE /* Assets.xcassets */; };
 		D700000A000000000000CAFE /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6000000000000000000CAFE /* ReplayKit.framework */; };
 		D700000B000000000000CAFE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6000001000000000000CAFE /* AVFoundation.framework */; };
-		D700000C000000000000CAFE /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6000002000000000000CAFE /* AVKit.framework */; };
 		D700000D000000000000CAFE /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6000003000000000000CAFE /* UserNotifications.framework */; };
 		D700000E000000000000CAFE /* UnscrolledBroadcast.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D3000001000000000000CAFE /* UnscrolledBroadcast.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D700000F000000000000CAFE /* SessionActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400000C000000000000CAFE /* SessionActivityAttributes.swift */; };
@@ -117,7 +116,6 @@
 			files = (
 				D700000A000000000000CAFE /* ReplayKit.framework in Frameworks */,
 				D700000B000000000000CAFE /* AVFoundation.framework in Frameworks */,
-				D700000C000000000000CAFE /* AVKit.framework in Frameworks */,
 				D700000D000000000000CAFE /* UserNotifications.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
