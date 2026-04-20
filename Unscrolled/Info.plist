@@ -32,6 +32,7 @@
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>instagram</string>
+		<string>chatgpt</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

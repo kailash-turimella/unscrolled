@@ -9,6 +9,7 @@ struct FactCheckView: View {
     @StateObject private var analyzer = ContentAnalyzer()
     @State private var isSaving = false
     @State private var saveSuccess = false
+    @State private var showCopied = false
 
     var body: some View {
         NavigationStack {
@@ -23,6 +24,7 @@ struct FactCheckView: View {
                         loadingSection
                     case .done(let result):
                         ResultsView(result: result)
+                        chatGPTButton(result: result)
                     case .failed(let message):
                         errorSection(message)
                     }
@@ -64,6 +66,76 @@ struct FactCheckView: View {
         )
         modelContext.insert(item)
         try? modelContext.save()
+    }
+
+    private func chatGPTButton(result: AnalysisResult) -> some View {
+        Button {
+            UIPasteboard.general.string = buildChatGPTPrompt(result: result)
+            showCopied = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { showCopied = false }
+            let chatGPT = URL(string: "chatgpt://")!
+            let fallback = URL(string: "https://chat.openai.com")!
+            UIApplication.shared.open(
+                UIApplication.shared.canOpenURL(chatGPT) ? chatGPT : fallback
+            )
+        } label: {
+            Label(
+                showCopied ? "Prompt copied — paste in ChatGPT" : "Discuss in ChatGPT",
+                systemImage: showCopied ? "checkmark" : "bubble.left.and.bubble.right.fill"
+            )
+            .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.bordered)
+        .tint(.green)
+        .padding(.horizontal)
+    }
+
+    private func buildChatGPTPrompt(result: AnalysisResult) -> String {
+        var lines: [String] = []
+
+        lines += [
+            "An app called Unscrolled silently captures Instagram content during a scrolling session and runs it through AI. Here's what it found on a piece of content I just saw. I want to discuss it.",
+            ""
+        ]
+
+        // Content
+        lines.append("— CONTENT —")
+        lines.append("Type: \(result.extracted.contentType)")
+        if let u = result.extracted.username { lines.append("Account: @\(u)") }
+        if let t = result.extracted.topic    { lines.append("Topic: \(t)") }
+        lines.append("Emotional tone: \(result.extracted.emotionalTone)")
+        if result.extracted.isSponsored      { lines.append("Marked as sponsored") }
+        if !result.extracted.visibleText.isEmpty {
+            lines.append("Text on screen: \(result.extracted.visibleText.joined(separator: " · "))")
+        }
+
+        if !result.extracted.claims.isEmpty {
+            lines.append("")
+            lines.append("Claims made:")
+            result.extracted.claims.enumerated().forEach { i, c in lines.append("  \(i + 1). \(c)") }
+        }
+
+        // Analysis
+        lines += ["", "— ANALYSIS —", result.analysis.summary]
+        lines.append("Manipulation score: \(result.analysis.manipulationScore)/10")
+        if !result.analysis.biasIndicators.isEmpty {
+            lines.append("Bias indicators: \(result.analysis.biasIndicators.joined(separator: ", "))")
+        }
+        if !result.analysis.manipulationTechniques.isEmpty {
+            lines.append("Techniques: \(result.analysis.manipulationTechniques.joined(separator: ", "))")
+        }
+
+        // Fact check
+        lines += ["", "— FACT CHECK —",
+                  "Overall verdict: \(result.factCheck.overallVerdict) (confidence: \(result.factCheck.confidence))"]
+        for c in result.factCheck.claims {
+            lines.append("• \"\(c.claim)\" → \(c.verdict): \(c.explanation)")
+        }
+        if let notes = result.factCheck.notes { lines.append(notes) }
+
+        lines += ["", "I want to discuss this further. What are your thoughts on this content, its accuracy, and whether I should be concerned about how it's trying to influence me?"]
+
+        return lines.joined(separator: "\n")
     }
 
     private func saveButton(result: AnalysisResult) -> some View {
