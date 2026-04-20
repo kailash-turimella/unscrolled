@@ -22,6 +22,10 @@
 		D700000F000000000000CAFE /* SessionActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400000C000000000000CAFE /* SessionActivityAttributes.swift */; };
 		D7000010000000000000CAFE /* LiveActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400000D000000000000CAFE /* LiveActivityManager.swift */; };
 		D7000011000000000000CAFE /* FactCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400000E000000000000CAFE /* FactCheckView.swift */; };
+		DE000000000000000000CAFE /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000000000000000000CAFE /* APIConfig.swift */; };
+		DE000001000000000000CAFE /* AnthropicClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000001000000000000CAFE /* AnthropicClient.swift */; };
+		DE000002000000000000CAFE /* AnalysisModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000002000000000000CAFE /* AnalysisModels.swift */; };
+		DE000003000000000000CAFE /* ContentAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000003000000000000CAFE /* ContentAnalyzer.swift */; };
 		D8000000000000000000CAFE /* SampleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5000000000000000000CAFE /* SampleHandler.swift */; };
 		D8000001000000000000CAFE /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6000004000000000000CAFE /* ReplayKit.framework */; };
 		DC000000000000000000CAFE /* UnscrolledWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB000002000000000000CAFE /* UnscrolledWidgets.swift */; };
@@ -90,6 +94,11 @@
 		D400000C000000000000CAFE /* SessionActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionActivityAttributes.swift; sourceTree = "<group>"; };
 		D400000D000000000000CAFE /* LiveActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityManager.swift; sourceTree = "<group>"; };
 		D400000E000000000000CAFE /* FactCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactCheckView.swift; sourceTree = "<group>"; };
+		DD000000000000000000CAFE /* APIConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConfig.swift; sourceTree = "<group>"; };
+		DD000001000000000000CAFE /* AnthropicClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnthropicClient.swift; sourceTree = "<group>"; };
+		DD000002000000000000CAFE /* AnalysisModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisModels.swift; sourceTree = "<group>"; };
+		DD000003000000000000CAFE /* ContentAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentAnalyzer.swift; sourceTree = "<group>"; };
+		DD000004000000000000CAFE /* APIConfig.example.swift */ = {isa = PBXFileReference; lastKnownFileType = text; path = "APIConfig.example.swift"; sourceTree = "<group>"; };
 		D5000000000000000000CAFE /* SampleHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleHandler.swift; sourceTree = "<group>"; };
 		D5000001000000000000CAFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5000002000000000000CAFE /* UnscrolledBroadcast.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UnscrolledBroadcast.entitlements; sourceTree = "<group>"; };
@@ -182,6 +191,11 @@
 				D400000C000000000000CAFE /* SessionActivityAttributes.swift */,
 				D400000D000000000000CAFE /* LiveActivityManager.swift */,
 				D400000E000000000000CAFE /* FactCheckView.swift */,
+				DD000000000000000000CAFE /* APIConfig.swift */,
+				DD000004000000000000CAFE /* APIConfig.example.swift */,
+				DD000001000000000000CAFE /* AnthropicClient.swift */,
+				DD000002000000000000CAFE /* AnalysisModels.swift */,
+				DD000003000000000000CAFE /* ContentAnalyzer.swift */,
 				D4000009000000000000CAFE /* Info.plist */,
 				D400000A000000000000CAFE /* Unscrolled.entitlements */,
 				D400000B000000000000CAFE /* Assets.xcassets */,
@@ -348,6 +362,10 @@
 				D700000F000000000000CAFE /* SessionActivityAttributes.swift in Sources */,
 				D7000010000000000000CAFE /* LiveActivityManager.swift in Sources */,
 				D7000011000000000000CAFE /* FactCheckView.swift in Sources */,
+				DE000000000000000000CAFE /* APIConfig.swift in Sources */,
+				DE000001000000000000CAFE /* AnthropicClient.swift in Sources */,
+				DE000002000000000000CAFE /* AnalysisModels.swift in Sources */,
+				DE000003000000000000CAFE /* ContentAnalyzer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

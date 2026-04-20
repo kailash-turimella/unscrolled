@@ -48,9 +48,10 @@ fastlane/test_output
 *.p12
 *.certSigningRequest
 
-# Environment
+# Environment / secrets
 .env
 .env.local
+Unscrolled/APIConfig.swift
 
 # Logs
 *.log
