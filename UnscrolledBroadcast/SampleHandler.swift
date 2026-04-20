@@ -30,6 +30,13 @@ class SampleHandler: RPBroadcastSampleHandler {
     }
 
     override func processSampleBuffer(_ sampleBuffer: CMSampleBuffer, with sampleBufferType: RPSampleBufferType) {
+        if defaults.bool(forKey: "stopBroadcast") {
+            defaults.removeObject(forKey: "stopBroadcast")
+            finishBroadcastWithError(NSError(domain: "Unscrolled", code: 0,
+                userInfo: [NSLocalizedDescriptionKey: "Session ended"]))
+            return
+        }
+
         switch sampleBufferType {
         case .video:
             defaults.set(Date(), forKey: "broadcastHeartbeat")

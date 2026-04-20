@@ -72,27 +72,28 @@ struct ContentView: View {
 
             } else {
                 Image(systemName: "eye.slash")
-                    .font(.system(size: 40)).foregroundStyle(.secondary)
+                    .font(.system(size: 36)).foregroundStyle(.secondary)
 
-                VStack(spacing: 6) {
-                    Text("Step 1 — Start recording")
-                        .font(.caption).foregroundStyle(.secondary)
+                HStack(spacing: 12) {
                     Button(action: triggerBroadcastPicker) {
-                        Label("Start Screen Recording", systemImage: "record.circle")
+                        Label("Record", systemImage: "record.circle")
+                            .font(.subheadline)
                     }
                     .buttonStyle(.bordered)
+
+                    Button(action: startSession) {
+                        Label("Start Session", systemImage: "play.fill")
+                            .font(.subheadline)
+                    }
+                    .buttonStyle(.borderedProminent)
                 }
 
-                VStack(spacing: 6) {
-                    Text("Step 2 — Start session")
-                        .font(.caption).foregroundStyle(.secondary)
-                    Button("Start Session & Open Instagram", action: startSession)
-                        .buttonStyle(.borderedProminent)
-                }
+                Text("Start recording first, then tap Start Session")
+                    .font(.caption2).foregroundStyle(.tertiary)
             }
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 24).padding(.horizontal)
+        .padding(.vertical, 16).padding(.horizontal)
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
     }
 

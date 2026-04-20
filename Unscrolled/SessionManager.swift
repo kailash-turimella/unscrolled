@@ -53,6 +53,7 @@ final class SessionManager: ObservableObject {
         try? modelContext?.save()
 
         defaults.removeObject(forKey: "sessionStartTime")
+        defaults.set(true, forKey: "stopBroadcast")
         sessionStartTime = nil
         isSessionActive = false
         currentSessionDuration = 0
