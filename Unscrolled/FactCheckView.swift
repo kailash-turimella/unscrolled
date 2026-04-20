@@ -1,9 +1,12 @@
 import SwiftUI
+import Photos
 
 struct FactCheckView: View {
     @EnvironmentObject var session: SessionManager
     @Environment(\.dismiss) private var dismiss
     @StateObject private var analyzer = ContentAnalyzer()
+    @State private var isSaving = false
+    @State private var saveSuccess = false
 
     var body: some View {
         NavigationStack {
@@ -23,7 +26,7 @@ struct FactCheckView: View {
                     }
                 }
                 .padding(.top)
-                .padding(.bottom, 32)
+                .padding(.bottom, 100)
             }
             .navigationTitle("Fact Check")
             .navigationBarTitleDisplayMode(.inline)
@@ -37,7 +40,60 @@ struct FactCheckView: View {
                     Button("Done") { dismiss() }
                 }
             }
+            .overlay(alignment: .bottomTrailing) {
+                if case .done(let result) = analyzer.state {
+                    saveButton(result: result)
+                }
+            }
         }
+    }
+
+    private func saveButton(result: AnalysisResult) -> some View {
+        Button {
+            Task { await saveToPhotos(result: result) }
+        } label: {
+            Group {
+                if isSaving {
+                    ProgressView().tint(.white)
+                } else if saveSuccess {
+                    Image(systemName: "checkmark")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.white)
+                } else {
+                    Image(systemName: "square.and.arrow.down")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.white)
+                }
+            }
+            .frame(width: 56, height: 56)
+            .background(.blue, in: Circle())
+            .shadow(radius: 4, y: 2)
+        }
+        .disabled(isSaving)
+        .padding(.trailing, 20)
+        .padding(.bottom, 24)
+    }
+
+    @MainActor
+    private func saveToPhotos(result: AnalysisResult) async {
+        isSaving = true
+        defer { isSaving = false }
+
+        let renderer = ImageRenderer(
+            content: FactCheckExportView(frame: session.factCheckFrame, result: result)
+        )
+        renderer.scale = UIScreen.main.scale
+        renderer.proposedSize = ProposedViewSize(width: 390, height: nil)
+
+        guard let image = renderer.uiImage else { return }
+
+        let status = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
+        guard status == .authorized || status == .limited else { return }
+
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+        saveSuccess = true
+        try? await Task.sleep(nanoseconds: 2_000_000_000)
+        saveSuccess = false
     }
 
     // MARK: - Frame
@@ -352,5 +408,44 @@ struct VerdictIcon: View {
         default:
             Image(systemName: "questionmark.circle.fill").foregroundStyle(.secondary)
         }
+    }
+}
+
+// MARK: - Export layout (rendered to image for Photos save)
+
+struct FactCheckExportView: View {
+    let frame: UIImage?
+    let result: AnalysisResult
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            // Header
+            HStack(spacing: 8) {
+                Image(systemName: "eye.slash.fill")
+                    .foregroundStyle(.red)
+                Text("Unscrolled")
+                    .font(.headline.weight(.semibold))
+                Spacer()
+                Text(Date(), style: .date)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.horizontal)
+
+            // Screenshot
+            if let frame {
+                Image(uiImage: frame)
+                    .resizable()
+                    .scaledToFit()
+                    .cornerRadius(12)
+                    .padding(.horizontal)
+            }
+
+            // Results
+            ResultsView(result: result)
+                .padding(.bottom, 8)
+        }
+        .padding(.vertical, 20)
+        .background(Color(UIColor.systemBackground))
     }
 }

@@ -37,6 +37,8 @@
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Unscrolled uses screen recording to monitor your social media sessions.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Unscrolled saves fact check results to your photo library.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
