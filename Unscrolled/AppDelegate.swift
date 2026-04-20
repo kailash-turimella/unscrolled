@@ -1,4 +1,5 @@
 import UIKit
+import SwiftData
 
 extension Notification.Name {
     static let openFactCheck = Notification.Name("openFactCheck")
@@ -6,6 +7,10 @@ extension Notification.Name {
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    static let modelContainer: ModelContainer = {
+        try! ModelContainer(for: SessionItem.self, FactCheckItem.self)
+    }()
 
     func application(
         _ application: UIApplication,

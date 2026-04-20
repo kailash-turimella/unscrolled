@@ -22,6 +22,7 @@
 		D700000F000000000000CAFE /* SessionActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400000C000000000000CAFE /* SessionActivityAttributes.swift */; };
 		D7000010000000000000CAFE /* LiveActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400000D000000000000CAFE /* LiveActivityManager.swift */; };
 		D7000011000000000000CAFE /* FactCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400000E000000000000CAFE /* FactCheckView.swift */; };
+		DF000000000000000000CAFE /* AppModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF000001000000000000CAFE /* AppModels.swift */; };
 		DE000000000000000000CAFE /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000000000000000000CAFE /* APIConfig.swift */; };
 		DE000001000000000000CAFE /* AnthropicClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000001000000000000CAFE /* AnthropicClient.swift */; };
 		DE000002000000000000CAFE /* AnalysisModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000002000000000000CAFE /* AnalysisModels.swift */; };
@@ -94,6 +95,7 @@
 		D400000C000000000000CAFE /* SessionActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionActivityAttributes.swift; sourceTree = "<group>"; };
 		D400000D000000000000CAFE /* LiveActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityManager.swift; sourceTree = "<group>"; };
 		D400000E000000000000CAFE /* FactCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactCheckView.swift; sourceTree = "<group>"; };
+		DF000001000000000000CAFE /* AppModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModels.swift; sourceTree = "<group>"; };
 		DD000000000000000000CAFE /* APIConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConfig.swift; sourceTree = "<group>"; };
 		DD000001000000000000CAFE /* AnthropicClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnthropicClient.swift; sourceTree = "<group>"; };
 		DD000002000000000000CAFE /* AnalysisModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisModels.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 				D400000C000000000000CAFE /* SessionActivityAttributes.swift */,
 				D400000D000000000000CAFE /* LiveActivityManager.swift */,
 				D400000E000000000000CAFE /* FactCheckView.swift */,
+				DF000001000000000000CAFE /* AppModels.swift */,
 				DD000000000000000000CAFE /* APIConfig.swift */,
 				DD000004000000000000CAFE /* APIConfig.example.swift */,
 				DD000001000000000000CAFE /* AnthropicClient.swift */,
@@ -362,6 +365,7 @@
 				D700000F000000000000CAFE /* SessionActivityAttributes.swift in Sources */,
 				D7000010000000000000CAFE /* LiveActivityManager.swift in Sources */,
 				D7000011000000000000CAFE /* FactCheckView.swift in Sources */,
+				DF000000000000000000CAFE /* AppModels.swift in Sources */,
 				DE000000000000000000CAFE /* APIConfig.swift in Sources */,
 				DE000001000000000000CAFE /* AnthropicClient.swift in Sources */,
 				DE000002000000000000CAFE /* AnalysisModels.swift in Sources */,

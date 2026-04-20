@@ -1,9 +1,11 @@
 import SwiftUI
+import SwiftData
 import Photos
 
 struct FactCheckView: View {
     @EnvironmentObject var session: SessionManager
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
     @StateObject private var analyzer = ContentAnalyzer()
     @State private var isSaving = false
     @State private var saveSuccess = false
@@ -46,6 +48,22 @@ struct FactCheckView: View {
                 }
             }
         }
+        .onChange(of: analyzer.state.isDone) { _, isDone in
+            if isDone, case .done(let result) = analyzer.state {
+                persistResult(result)
+            }
+        }
+    }
+
+    private func persistResult(_ result: AnalysisResult) {
+        let frameData = session.factCheckFrame?.jpegData(compressionQuality: 0.8)
+        let item = FactCheckItem(
+            result: result,
+            sessionStartTime: session.sessionStartTime,
+            frameData: frameData
+        )
+        modelContext.insert(item)
+        try? modelContext.save()
     }
 
     private func saveButton(result: AnalysisResult) -> some View {

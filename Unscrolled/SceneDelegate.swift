@@ -1,5 +1,6 @@
 import UIKit
 import SwiftUI
+import SwiftData
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -11,9 +12,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         options connectionOptions: UIScene.ConnectionOptions
     ) {
         guard let windowScene = scene as? UIWindowScene else { return }
+
+        let context = ModelContext(AppDelegate.modelContainer)
+        SessionManager.shared.configure(modelContext: context)
+
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = UIHostingController(
-            rootView: ContentView().environmentObject(SessionManager.shared)
+            rootView: ContentView()
+                .environmentObject(SessionManager.shared)
+                .modelContainer(AppDelegate.modelContainer)
         )
         self.window = window
         window.makeKeyAndVisible()

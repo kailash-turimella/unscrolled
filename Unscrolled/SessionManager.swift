@@ -1,31 +1,6 @@
 import Foundation
 import UIKit
-
-struct SessionRecord: Codable, Identifiable {
-    let id: UUID
-    let startTime: Date
-    let duration: TimeInterval
-
-    init(startTime: Date, duration: TimeInterval) {
-        self.id = UUID()
-        self.startTime = startTime
-        self.duration = duration
-    }
-
-    var formattedDuration: String { duration.formattedTime }
-}
-
-extension TimeInterval {
-    var formattedTime: String {
-        let s = Int(self)
-        let h = s / 3600
-        let m = (s % 3600) / 60
-        let sec = s % 60
-        return h > 0
-            ? String(format: "%d:%02d:%02d", h, m, sec)
-            : String(format: "%d:%02d", m, sec)
-    }
-}
+import SwiftData
 
 final class SessionManager: ObservableObject {
     static let shared = SessionManager()
@@ -34,38 +9,30 @@ final class SessionManager: ObservableObject {
         UserDefaults(suiteName: "group.com.kailash.unscrolled") ?? .standard
     }()
 
-    @Published var isSessionActive = false
-    @Published var sessionStartTime: Date?
-    @Published var currentSessionDuration: TimeInterval = 0
-    @Published var totalTimeSpent: TimeInterval = 0
-    @Published var recentSessions: [SessionRecord] = []
-    @Published var isBroadcastAlive = false
-    @Published var latestFrame: UIImage?
-    @Published var factCheckFrame: UIImage?
-
-    private var timer: Timer?
-    private var broadcastPollTimer: Timer?
-
     private lazy var appGroupURL: URL? = {
         FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.kailash.unscrolled")
     }()
 
-    private init() {
-        loadPersistedState()
+    @Published var isSessionActive = false
+    @Published var sessionStartTime: Date?
+    @Published var currentSessionDuration: TimeInterval = 0
+    @Published var isBroadcastAlive = false
+    @Published var latestFrame: UIImage?
+    @Published var factCheckFrame: UIImage?
+
+    private var modelContext: ModelContext?
+    private var timer: Timer?
+    private var broadcastPollTimer: Timer?
+
+    private init() {}
+
+    func configure(modelContext: ModelContext) {
+        self.modelContext = modelContext
+        migrateFromUserDefaultsIfNeeded()
+        resumeActiveSessionIfNeeded()
     }
 
-    private func loadPersistedState() {
-        totalTimeSpent = defaults.double(forKey: "totalTimeSpent")
-        if let data = defaults.data(forKey: "recentSessions"),
-           let sessions = try? JSONDecoder().decode([SessionRecord].self, from: data) {
-            recentSessions = sessions
-        }
-        if let startTime = defaults.object(forKey: "sessionStartTime") as? Date {
-            sessionStartTime = startTime
-            isSessionActive = true
-            startLiveTimer()
-        }
-    }
+    // MARK: - Session lifecycle
 
     func startSession() {
         let now = Date()
@@ -81,17 +48,11 @@ final class SessionManager: ObservableObject {
         guard let start = sessionStartTime else { return }
         let duration = Date().timeIntervalSince(start)
 
-        totalTimeSpent += duration
-        defaults.set(totalTimeSpent, forKey: "totalTimeSpent")
+        let item = SessionItem(startTime: start, duration: duration)
+        modelContext?.insert(item)
+        try? modelContext?.save()
+
         defaults.removeObject(forKey: "sessionStartTime")
-
-        let record = SessionRecord(startTime: start, duration: duration)
-        recentSessions.insert(record, at: 0)
-        if recentSessions.count > 50 { recentSessions = Array(recentSessions.prefix(50)) }
-        if let data = try? JSONEncoder().encode(recentSessions) {
-            defaults.set(data, forKey: "recentSessions")
-        }
-
         sessionStartTime = nil
         isSessionActive = false
         currentSessionDuration = 0
@@ -102,25 +63,14 @@ final class SessionManager: ObservableObject {
         LiveActivityManager.shared.stop()
     }
 
-    func resetStats() {
-        totalTimeSpent = 0
-        recentSessions = []
-        defaults.set(0, forKey: "totalTimeSpent")
-        defaults.removeObject(forKey: "recentSessions")
-    }
+    // MARK: - Fact check frame
 
     func captureFactCheckFrame() {
         loadLatestFrame()
         factCheckFrame = latestFrame
     }
 
-    private func startLiveTimer() {
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            guard let self, let start = self.sessionStartTime else { return }
-            self.currentSessionDuration = Date().timeIntervalSince(start)
-        }
-    }
+    // MARK: - Broadcast polling
 
     func startBroadcastPolling() {
         refreshBroadcastHeartbeat()
@@ -150,4 +100,47 @@ final class SessionManager: ObservableObject {
               let image = UIImage(data: data) else { return }
         latestFrame = image
     }
+
+    // MARK: - Private
+
+    private func startLiveTimer() {
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            guard let self, let start = self.sessionStartTime else { return }
+            self.currentSessionDuration = Date().timeIntervalSince(start)
+        }
+    }
+
+    private func resumeActiveSessionIfNeeded() {
+        if let startTime = defaults.object(forKey: "sessionStartTime") as? Date {
+            sessionStartTime = startTime
+            isSessionActive = true
+            startLiveTimer()
+        }
+    }
+
+    // One-time migration from UserDefaults to SwiftData
+    private func migrateFromUserDefaultsIfNeeded() {
+        guard !defaults.bool(forKey: "swiftDataMigrated"),
+              let data = defaults.data(forKey: "recentSessions"),
+              let old = try? JSONDecoder().decode([LegacySessionRecord].self, from: data)
+        else {
+            defaults.set(true, forKey: "swiftDataMigrated")
+            return
+        }
+        for record in old {
+            modelContext?.insert(SessionItem(startTime: record.startTime, duration: record.duration))
+        }
+        try? modelContext?.save()
+        defaults.set(true, forKey: "swiftDataMigrated")
+        defaults.removeObject(forKey: "recentSessions")
+        defaults.removeObject(forKey: "totalTimeSpent")
+    }
+}
+
+// Used only for the one-time UserDefaults migration
+private struct LegacySessionRecord: Codable {
+    let id: UUID
+    let startTime: Date
+    let duration: TimeInterval
 }

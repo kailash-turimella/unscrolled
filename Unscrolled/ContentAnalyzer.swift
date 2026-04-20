@@ -16,6 +16,11 @@ final class ContentAnalyzer: ObservableObject {
             switch self { case .extracting, .analyzing, .factChecking: return true; default: return false }
         }
 
+        var isDone: Bool {
+            if case .done = self { return true }
+            return false
+        }
+
         var stepLabel: String {
             switch self {
             case .extracting:   return "Reading content…"
