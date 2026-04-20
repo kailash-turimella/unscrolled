@@ -129,7 +129,7 @@ struct ContentView: View {
     private var analyticsSection: some View {
         VStack(spacing: 16) {
             manipulationCard
-            if !topBiases.isEmpty { biasCard }
+            biasCard
             verdictCard
         }
     }
@@ -171,21 +171,25 @@ struct ContentView: View {
     }
 
     private var biasCard: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Label("Common Biases", systemImage: "brain.fill")
+        let insight = biasInsight
+
+        return VStack(alignment: .leading, spacing: 10) {
+            Label("Bias Patterns", systemImage: "brain.fill")
                 .font(.caption).foregroundStyle(.secondary).textCase(.uppercase)
 
-            VStack(alignment: .leading, spacing: 6) {
-                ForEach(topBiases, id: \.0) { bias, count in
-                    HStack {
-                        Text(bias)
-                            .font(.subheadline)
-                        Spacer()
-                        Text("\(count)×")
-                            .font(.caption.monospacedDigit())
-                            .foregroundStyle(.secondary)
+            Text(insight.interpretation)
+                .font(.subheadline)
+                .fixedSize(horizontal: false, vertical: true)
+
+            if !insight.dominantCategories.isEmpty {
+                HStack(spacing: 6) {
+                    ForEach(insight.dominantCategories, id: \.self) { cat in
+                        Text(cat)
+                            .font(.system(size: 11, weight: .medium))
+                            .padding(.horizontal, 10).padding(.vertical, 5)
+                            .background(.orange.opacity(0.15), in: Capsule())
+                            .foregroundStyle(.orange)
                     }
-                    if bias != topBiases.last?.0 { Divider() }
                 }
             }
         }
@@ -251,10 +255,87 @@ struct ContentView: View {
         return Double(factChecks.map(\.manipulationScore).reduce(0, +)) / Double(factChecks.count)
     }
 
-    private var topBiases: [(String, Int)] {
-        var counts: [String: Int] = [:]
-        factChecks.flatMap(\.biasIndicators).forEach { counts[$0, default: 0] += 1 }
-        return counts.sorted { $0.value > $1.value }.prefix(5).map { ($0.key, $0.value) }
+    // Groups raw bias strings (which vary wildly per Claude response) into stable
+    // broad categories, then synthesises a one-sentence interpretation.
+    private var biasInsight: (interpretation: String, dominantCategories: [String]) {
+        let allBiases = factChecks.flatMap(\.biasIndicators)
+        guard !allBiases.isEmpty else {
+            return ("No strong bias patterns detected yet.", [])
+        }
+
+        // Bucket each raw bias string into a broad category
+        var categoryCounts: [String: Int] = [:]
+        for bias in allBiases {
+            categoryCounts[broadCategory(for: bias), default: 0] += 1
+        }
+
+        // Stable sort: count desc, then name asc to break ties
+        let ranked = categoryCounts
+            .sorted { $0.value != $1.value ? $0.value > $1.value : $0.key < $1.key }
+            .map(\.key)
+
+        let top = Array(ranked.prefix(3))
+        let avg = avgManipulationScore
+
+        // Build a natural-language sentence from the dominant categories
+        var sentence = ""
+        switch top.count {
+        case 0:
+            sentence = "No strong bias patterns detected yet."
+        case 1:
+            sentence = "Your feed consistently relies on \(top[0].lowercased())."
+        case 2:
+            sentence = "Your feed leans on \(top[0].lowercased()) and \(top[1].lowercased())."
+        default:
+            sentence = "Your feed mixes \(top[0].lowercased()), \(top[1].lowercased()), and \(top[2].lowercased())."
+        }
+
+        // Append a severity note based on manipulation score
+        if avg > 7 {
+            sentence += " The content you're watching is highly manipulative overall."
+        } else if avg > 4 {
+            sentence += " Moderate manipulation is common in what you're watching."
+        } else if avg > 0 {
+            sentence += " The manipulation level is generally low."
+        }
+
+        return (sentence, top)
+    }
+
+    private func broadCategory(for bias: String) -> String {
+        let b = bias.lowercased()
+        if b.contains("fear") || b.contains("outrage") || b.contains("anger") ||
+           b.contains("emotion") || b.contains("guilt") || b.contains("anxiety") {
+            return "Emotional manipulation"
+        }
+        if b.contains("authority") || b.contains("expert") || b.contains("credib") ||
+           b.contains("trust") || b.contains("official") {
+            return "Appeal to authority"
+        }
+        if b.contains("urgency") || b.contains("scarcity") || b.contains("fomo") ||
+           b.contains("limited") || b.contains("now or never") {
+            return "False urgency"
+        }
+        if b.contains("confirm") || b.contains("echo") || b.contains("tribal") ||
+           b.contains("in-group") || b.contains("us vs") {
+            return "Confirmation bias"
+        }
+        if b.contains("mislead") || b.contains("false") || b.contains("inaccur") ||
+           b.contains("misinform") || b.contains("fabricat") {
+            return "Misinformation"
+        }
+        if b.contains("bandwagon") || b.contains("social proof") || b.contains("popular") ||
+           b.contains("everyone") || b.contains("viral") {
+            return "Social proof"
+        }
+        if b.contains("sensational") || b.contains("clickbait") || b.contains("exaggerat") ||
+           b.contains("hyperbole") || b.contains("shocking") {
+            return "Sensationalism"
+        }
+        if b.contains("nostalg") || b.contains("tradition") || b.contains("used to") {
+            return "Appeal to tradition"
+        }
+        return "Other"
     }
 
     private var verdictCounts: [String: Int] {
