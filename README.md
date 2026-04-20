@@ -6,7 +6,7 @@ Start a session, open Instagram, scroll. When something looks questionable, tap 
 
 ---
 
-## What It Does Today
+## What It Does
 
 - **Fact check on demand** — Tap the Dynamic Island during a session. The app captures a static frame from that instant and runs a three-step analysis: extract the content, analyze it for bias and manipulation, fact-check the claims.
 - **Session tracking** — Timer runs while you're in Instagram. Total time accumulates across sessions.
