@@ -1,19 +1,27 @@
 # Unscrolled
 
-A personal iOS app that watches what I watch. It runs silently in the background while I scroll Instagram, capturing every frame and tracking how long I've been on it.
+A personal iOS app that fact-checks whatever is on your screen while you scroll Instagram.
 
-The end goal is to have an app that can tell me: how many reels I watched, what they were about, whether they were accurate, how they made me feel, and how my algorithm has profiled me — all as an ambient part of using my phone, not a separate journaling exercise.
+Start a session, open Instagram, scroll. When something looks questionable, tap the Dynamic Island — it captures a screenshot of that moment and runs it through Claude. You get back what the content actually claims, whether those claims hold up, and what manipulation techniques it's using on you.
 
 ---
 
 ## What It Does Today
 
-- **Session tracking** — Start a session, open Instagram, scroll. A timer runs and accumulates across sessions so I can see my total time.
-- **Screen capture** — Uses iOS's built-in screen recording to silently capture frames in the background. Nothing leaves the device.
-- **Dynamic Island timer** — A live timer shows on the Dynamic Island while a session is active. Tapping it opens a Fact Check view showing the latest captured frame.
-- **Floating bubble** — A draggable bubble stays visible while the app is in the foreground so I know a session is active.
-- **Nudge notifications** — Notifications every 5 minutes reminding me how long I've been scrolling.
-- **Session history** — A log of every session with start time and duration.
+- **Fact check on demand** — Tap the Dynamic Island during a session. The app captures a static frame from that instant and runs a three-step analysis: extract the content, analyze it for bias and manipulation, fact-check the claims.
+- **Session tracking** — Timer runs while you're in Instagram. Total time accumulates across sessions.
+- **Nudge notifications** — Local notifications every 5 minutes reminding you how long you've been scrolling.
+- **Session history** — Log of every session with start time and duration.
+
+## How the Analysis Works
+
+Each fact check makes three separate calls to `claude-sonnet-4-20250514`, each building on the last:
+
+1. **Extract** — The screenshot is sent once. Claude pulls out the content type, username, caption, all visible text, and any factual claims.
+2. **Analyze** — The extracted data (no image) is analyzed for cognitive bias, emotional manipulation techniques, and what the content signals about your algorithmic profile.
+3. **Fact check** — The claims list is checked individually. Each gets a verdict: true, false, misleading, or unverifiable. Claude uses "unverifiable" rather than guessing.
+
+Using structured tool calls for each step enforces a strict JSON schema on every response — no freeform prose that can drift or hallucinate.
 
 ---
 
@@ -22,8 +30,9 @@ The end goal is to have an app that can tell me: how many reels I watched, what 
 1. Open Unscrolled.
 2. Tap **Start Screen Recording** and select **Unscrolled Broadcast** from the picker.
 3. Tap **Start Session & Open Instagram** — Instagram opens and the session begins.
-4. Scroll normally. Unscrolled captures frames in the background via ReplayKit.
-5. When done, return to Unscrolled and tap **End Session**.
+4. Scroll normally. When you want something fact-checked, tap the Dynamic Island timer.
+5. The app captures that frame and runs the analysis. Results appear in three cards.
+6. When done, return to Unscrolled and tap **End Session**.
 
 ---
 
@@ -33,9 +42,9 @@ Three targets sharing an **App Group** (`group.com.kailash.unscrolled`):
 
 | Target | Role |
 |--------|------|
-| `Unscrolled` | Dashboard, session management, notifications, Live Activity |
+| `Unscrolled` | Dashboard, session management, notifications, Live Activity, analysis pipeline |
 | `UnscrolledBroadcast` | Receives `CMSampleBuffer` frames from ReplayKit, writes heartbeat + latest JPEG to App Group |
-| `UnscrolledWidgets` | Dynamic Island Live Activity (timer + Fact Check button) |
+| `UnscrolledWidgets` | Dynamic Island Live Activity (timer + tap target) |
 
 **Key identifiers:**
 - Main app: `com.kailash.unscrolled`
@@ -50,30 +59,32 @@ Three targets sharing an **App Group** (`group.com.kailash.unscrolled`):
 
 ```
 Unscrolled/
-├── AppDelegate.swift              — Entry point, URL scheme handler
-├── SceneDelegate.swift            — Window setup, factcheck URL routing
-├── ContentView.swift              — Main dashboard (SwiftUI)
-├── SessionManager.swift           — Session state, timer, persistence
+├── AppDelegate.swift               — Entry point, URL scheme handler
+├── SceneDelegate.swift             — Window setup, factcheck URL routing
+├── ContentView.swift               — Main dashboard (SwiftUI)
+├── SessionManager.swift            — Session state, timer, persistence
 ├── SessionActivityAttributes.swift — Shared Live Activity data model
-├── LiveActivityManager.swift      — Starts/stops Dynamic Island activity
-├── FactCheckView.swift            — Shows latest captured frame
-├── BroadcastManager.swift         — Broadcast picker helper
-├── BubbleWindowManager.swift      — Draggable in-app bubble (UIWindow)
-├── BubbleView.swift               — Bubble circle (SwiftUI)
-├── NotificationManager.swift      — 5-minute nudge notifications
-├── SilentAudioPlayer.swift        — AVAudioSession keepalive in background
+├── LiveActivityManager.swift       — Starts/stops Dynamic Island activity
+├── FactCheckView.swift             — Analysis results UI
+├── AnthropicClient.swift           — URLSession wrapper for Claude API
+├── AnalysisModels.swift            — Codable structs + tool schemas for all three steps
+├── ContentAnalyzer.swift           — Three-step analysis pipeline
+├── APIConfig.swift                 — API key (gitignored — see APIConfig.example.swift)
+├── BroadcastManager.swift          — Broadcast picker helper
+├── NotificationManager.swift       — 5-minute nudge notifications
+├── SilentAudioPlayer.swift         — AVAudioSession keepalive in background
 ├── Info.plist
 ├── Unscrolled.entitlements
 └── Assets.xcassets/
 
 UnscrolledBroadcast/
-├── SampleHandler.swift            — RPBroadcastSampleHandler: captures frames, writes heartbeat + JPEG
+├── SampleHandler.swift             — RPBroadcastSampleHandler: captures frames, writes heartbeat + JPEG
 ├── Info.plist
 └── UnscrolledBroadcast.entitlements
 
 UnscrolledWidgets/
-├── UnscrolledWidgets.swift        — WidgetBundle entry point
-├── UnscrolledLiveActivity.swift   — Dynamic Island layout (compact, expanded, lock screen)
+├── UnscrolledWidgets.swift         — WidgetBundle entry point
+├── UnscrolledLiveActivity.swift    — Dynamic Island layout
 ├── Info.plist
 └── UnscrolledWidgets.entitlements
 ```
@@ -86,17 +97,18 @@ UnscrolledWidgets/
 - Xcode 15+
 - iPhone running iOS 17+
 - Free Apple Developer account (sufficient for device testing)
+- Anthropic API key
+
+### API Key
+Copy `APIConfig.example.swift` to `APIConfig.swift` and paste your key. That file is gitignored.
 
 ### Signing
-
 For each of the three targets (Unscrolled, UnscrolledBroadcast, UnscrolledWidgets):
-
 1. Open **Signing & Capabilities** and set your **Team**.
 2. Bundle IDs are pre-set — Xcode will auto-provision them.
 3. For **UnscrolledWidgets**, also add the **App Groups** capability → `group.com.kailash.unscrolled`.
 
 ### Run
-
 1. Connect your iPhone, select it in the scheme picker.
 2. Select the **Unscrolled** scheme and press **Cmd+R**.
 3. Trust the developer certificate: **Settings → General → VPN & Device Management**.
@@ -105,6 +117,12 @@ For each of the three targets (Unscrolled, UnscrolledBroadcast, UnscrolledWidget
 
 ## Technical Notes
 
-- **IPC:** Extension↔app communication goes through the App Group container (UserDefaults for heartbeat, filesystem for JPEG frames). No XPC.
+- **IPC:** Extension↔app communication goes through the App Group container (UserDefaults for heartbeat, filesystem for JPEG frames).
 - **Background keepalive:** Silent `AVAudioSession` (`.playback`) keeps the main app process alive while on Instagram.
-- **No data leaves the device.** Screen capture stays local. Future AI features will send frames to an API on explicit user request only.
+- **No data leaves the device** except the single frame sent to the Claude API when you explicitly tap the Dynamic Island. That image is not stored or logged by the app.
+
+---
+
+## What's Next
+
+The current fact-check is single-frame. The next step is reel-level analysis — detecting reel boundaries from frame diffs, tracking reels watched per session, and running analysis across the full session rather than a single moment. Eventually the dashboard placeholder cards (reels watched, scroll velocity, topic breakdown, bias score) get filled in from real data.
