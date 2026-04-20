@@ -41,6 +41,7 @@ final class SessionManager: ObservableObject {
     @Published var recentSessions: [SessionRecord] = []
     @Published var isBroadcastAlive = false
     @Published var latestFrame: UIImage?
+    @Published var factCheckFrame: UIImage?
 
     private var timer: Timer?
     private var broadcastPollTimer: Timer?
@@ -73,7 +74,6 @@ final class SessionManager: ObservableObject {
         defaults.set(now, forKey: "sessionStartTime")
         startLiveTimer()
         NotificationManager.shared.scheduleSessionNotifications(from: now)
-        BubbleWindowManager.shared.show()
         LiveActivityManager.shared.start(sessionStart: now)
     }
 
@@ -99,8 +99,19 @@ final class SessionManager: ObservableObject {
         timer = nil
 
         NotificationManager.shared.cancelAll()
-        BubbleWindowManager.shared.hide()
         LiveActivityManager.shared.stop()
+    }
+
+    func resetStats() {
+        totalTimeSpent = 0
+        recentSessions = []
+        defaults.set(0, forKey: "totalTimeSpent")
+        defaults.removeObject(forKey: "recentSessions")
+    }
+
+    func captureFactCheckFrame() {
+        loadLatestFrame()
+        factCheckFrame = latestFrame
     }
 
     private func startLiveTimer() {
@@ -112,7 +123,7 @@ final class SessionManager: ObservableObject {
     }
 
     func startBroadcastPolling() {
-        refreshBroadcastHeartbeat()  // immediate update on foreground
+        refreshBroadcastHeartbeat()
         broadcastPollTimer?.invalidate()
         broadcastPollTimer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] _ in
             self?.refreshBroadcastHeartbeat()
@@ -122,7 +133,6 @@ final class SessionManager: ObservableObject {
     func stopBroadcastPolling() {
         broadcastPollTimer?.invalidate()
         broadcastPollTimer = nil
-        // intentionally keep last known isBroadcastAlive / latestFrame visible
     }
 
     func refreshBroadcastHeartbeat() {

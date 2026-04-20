@@ -24,6 +24,7 @@ func triggerBroadcastPicker() {
 struct ContentView: View {
     @EnvironmentObject var session: SessionManager
     @State private var showFactCheck = false
+    @State private var showResetConfirm = false
 
     var body: some View {
         NavigationStack {
@@ -105,10 +106,16 @@ struct ContentView: View {
 
     private var totalTimeCard: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Label("Total Time", systemImage: "clock.fill")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .textCase(.uppercase)
+            HStack {
+                Label("Total Time", systemImage: "clock.fill")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .textCase(.uppercase)
+                Spacer()
+                Button("Reset") { showResetConfirm = true }
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
 
             Text(session.totalTimeSpent.formattedTime)
                 .font(.system(size: 36, weight: .semibold, design: .monospaced))
@@ -120,6 +127,11 @@ struct ContentView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .confirmationDialog("Reset all stats?", isPresented: $showResetConfirm, titleVisibility: .visible) {
+            Button("Reset", role: .destructive) { session.resetStats() }
+        } message: {
+            Text("This clears your total time and session history. It cannot be undone.")
+        }
     }
 
     private var placeholderGrid: some View {

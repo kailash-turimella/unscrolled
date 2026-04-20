@@ -12,8 +12,6 @@
 		D7000002000000000000CAFE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4000002000000000000CAFE /* ContentView.swift */; };
 		D7000003000000000000CAFE /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4000003000000000000CAFE /* SessionManager.swift */; };
 		D7000004000000000000CAFE /* BroadcastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4000004000000000000CAFE /* BroadcastManager.swift */; };
-		D7000005000000000000CAFE /* BubbleWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4000005000000000000CAFE /* BubbleWindowManager.swift */; };
-		D7000006000000000000CAFE /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4000006000000000000CAFE /* BubbleView.swift */; };
 		D7000007000000000000CAFE /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4000007000000000000CAFE /* NotificationManager.swift */; };
 		D7000008000000000000CAFE /* SilentAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4000008000000000000CAFE /* SilentAudioPlayer.swift */; };
 		D7000009000000000000CAFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D400000B000000000000CAFE /* Assets.xcassets */; };
@@ -84,8 +82,6 @@
 		D4000002000000000000CAFE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D4000003000000000000CAFE /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		D4000004000000000000CAFE /* BroadcastManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastManager.swift; sourceTree = "<group>"; };
-		D4000005000000000000CAFE /* BubbleWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleWindowManager.swift; sourceTree = "<group>"; };
-		D4000006000000000000CAFE /* BubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
 		D4000007000000000000CAFE /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		D4000008000000000000CAFE /* SilentAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SilentAudioPlayer.swift; sourceTree = "<group>"; };
 		D4000009000000000000CAFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -181,8 +177,6 @@
 				D4000002000000000000CAFE /* ContentView.swift */,
 				D4000003000000000000CAFE /* SessionManager.swift */,
 				D4000004000000000000CAFE /* BroadcastManager.swift */,
-				D4000005000000000000CAFE /* BubbleWindowManager.swift */,
-				D4000006000000000000CAFE /* BubbleView.swift */,
 				D4000007000000000000CAFE /* NotificationManager.swift */,
 				D4000008000000000000CAFE /* SilentAudioPlayer.swift */,
 				D400000C000000000000CAFE /* SessionActivityAttributes.swift */,
@@ -349,8 +343,6 @@
 				D7000002000000000000CAFE /* ContentView.swift in Sources */,
 				D7000003000000000000CAFE /* SessionManager.swift in Sources */,
 				D7000004000000000000CAFE /* BroadcastManager.swift in Sources */,
-				D7000005000000000000CAFE /* BubbleWindowManager.swift in Sources */,
-				D7000006000000000000CAFE /* BubbleView.swift in Sources */,
 				D7000007000000000000CAFE /* NotificationManager.swift in Sources */,
 				D7000008000000000000CAFE /* SilentAudioPlayer.swift in Sources */,
 				D700000F000000000000CAFE /* SessionActivityAttributes.swift in Sources */,

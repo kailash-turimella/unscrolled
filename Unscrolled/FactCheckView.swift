@@ -25,7 +25,7 @@ struct FactCheckView: View {
 
     private var frameSection: some View {
         Group {
-            if let frame = session.latestFrame {
+            if let frame = session.factCheckFrame {
                 Image(uiImage: frame)
                     .resizable()
                     .scaledToFit()

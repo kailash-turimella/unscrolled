@@ -4,7 +4,6 @@ import SwiftUI
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    private var bubbleSetUp = false
 
     func scene(
         _ scene: UIScene,
@@ -21,6 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         if connectionOptions.urlContexts.contains(where: { $0.url.host == "factcheck" }) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                SessionManager.shared.captureFactCheckFrame()
                 NotificationCenter.default.post(name: .openFactCheck, object: nil)
             }
         }
@@ -28,19 +28,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         guard URLContexts.contains(where: { $0.url.host == "factcheck" }) else { return }
-        SessionManager.shared.loadLatestFrame()
+        SessionManager.shared.captureFactCheckFrame()
         NotificationCenter.default.post(name: .openFactCheck, object: nil)
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
-        guard let windowScene = scene as? UIWindowScene else { return }
-        if !bubbleSetUp {
-            bubbleSetUp = true
-            BubbleWindowManager.shared.setup(with: windowScene)
-        }
-        if SessionManager.shared.isSessionActive {
-            BubbleWindowManager.shared.show()
-        }
         SessionManager.shared.startBroadcastPolling()
     }
 
