@@ -16,6 +16,7 @@ class SampleHandler: RPBroadcastSampleHandler {
     private let ciContext = CIContext()
 
     override func broadcastStarted(withSetupInfo setupInfo: [String: NSObject]?) {
+        defaults.removeObject(forKey: "stopBroadcast")
         defaults.set(Date(), forKey: "broadcastStarted")
         defaults.set(Date(), forKey: "broadcastHeartbeat")
     }
